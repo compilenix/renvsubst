@@ -20,7 +20,7 @@ fn main() {
         let var_value = &value_from_env(&var_name);
         output = replace_var(&output, (&var_name, var_value));
     }
-    println!("{}", output);
+    print!("{}", output);
 }
 
 fn value_from_env(var_name: &str) -> String {
