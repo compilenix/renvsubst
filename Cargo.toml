@@ -1,0 +1,6 @@
+[package]
+name = "renvsubst"
+version = "0.1.0"
+authors = ["FujiHaruka <fujiharuka@realglobe.jp>"]
+
+[dependencies]
