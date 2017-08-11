@@ -5,3 +5,4 @@ authors = ["FujiHaruka <fujiharuka@realglobe.jp>"]
 
 [dependencies]
 regex = "0.2"
+uuid = { version = "0.4", features = ["v4"] }
