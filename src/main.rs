@@ -2,6 +2,7 @@ extern crate regex;
 
 use std::io::{self, Read};
 use std::env;
+// use std::fmt;
 use regex::Regex;
 
 fn main() {
@@ -14,7 +15,7 @@ fn main() {
     for caps in var_re.captures_iter(&input) {
         let var_name = &caps[1];
         let var_value = &value_from_env(var_name);
-        output = output.replace(var_name, var_value);
+        output = replace_var(&output, (var_name, var_value));
     }
     println!("{}", output);
 }
@@ -24,4 +25,12 @@ fn value_from_env(var_name: &str) -> String {
         Some(key_value) => key_value.1,
         None => String::from(""),
     }
+}
+
+fn replace_var(target: &str, var: (&str, &str)) -> String {
+    let var_name = var.0;
+    let var_value = var.1;
+    target.replace(&format!("${}", var_name), var_value)
+          // `{` character is escaped with `{{`
+          .replace(&format!("${{{}}}", var_name), var_value)
 }
