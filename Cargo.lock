@@ -1,6 +1,6 @@
 [root]
 name = "renvsubst"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "regex 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "uuid 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
