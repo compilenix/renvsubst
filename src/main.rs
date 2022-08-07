@@ -1,10 +1,11 @@
 extern crate regex;
 extern crate uuid;
-use std::io::{self, Read};
-use std::env;
-use uuid::Uuid;
+
 use regex::Regex;
 use std::collections::HashSet;
+use std::env;
+use std::io::{self, Read};
+use uuid::Uuid;
 
 fn main() {
     let mut input = String::new();
@@ -14,17 +15,19 @@ fn main() {
 
     let var_names = get_subst_names(&input);
     for var_name in var_names.into_iter() {
-        let var_value = &value_from_env(&var_name);
-        output = replace_var(&output, (&var_name, var_value));
+        match value_from_env(&var_name) {
+            Some(var_value) => output = replace_var(&output, (&var_name, &var_value)),
+            None => ()
+        };
     }
     output = remove_escape_char(&output);
     print!("{}", output);
 }
 
-fn value_from_env(var_name: &str) -> String {
+fn value_from_env(var_name: &str) -> Option<String> {
     match env::vars().find(|x| x.0 == var_name) {
-        Some(key_value) => key_value.1,
-        None => String::from(""),
+        Some(key_value) => Some(key_value.1),
+        None => None,
     }
 }
 
