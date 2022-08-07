@@ -1,12 +1,15 @@
 [package]
-name = "renvsubst"
-version = "0.1.2"
-authors = ["FujiHaruka <fujiharuka@realglobe.jp>"]
+name = "cnx-renvsubst"
+version = "0.1.3"
+authors = [
+    "FujiHaruka <fujiharuka@realglobe.jp>",
+    "CompileNix"
+]
 keywords = ["envsubst", "template"]
 license-file = "LICENSE"
 readme = "README.md"
 description = "Substitution like envsubst, but can escape."
-documentation = "http://github.com/FujiHaruka/renvsubst#README"
+documentation = "https://git.compilenix.org/CompileNix/renvsubst"
 
 [profile.release.package."*"]
 opt-level = "s"
