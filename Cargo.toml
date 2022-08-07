@@ -8,6 +8,18 @@ readme = "README.md"
 description = "Substitution like envsubst, but can escape."
 documentation = "http://github.com/FujiHaruka/renvsubst#README"
 
+[profile.release.package."*"]
+opt-level = "s"
+codegen-units = 1
+strip = true
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
 [dependencies]
 regex = "0.2"
 uuid = { version = "0.4", features = ["v4"] }
