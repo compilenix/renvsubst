@@ -10,6 +10,7 @@ license-file = "LICENSE"
 readme = "README.md"
 description = "Substitution like envsubst, but can escape."
 documentation = "https://git.compilenix.org/CompileNix/renvsubst"
+edition = "2021"
 
 [profile.release.package."*"]
 opt-level = "s"
@@ -24,5 +25,5 @@ panic = "abort"
 strip = true
 
 [dependencies]
-regex = "0.2"
-uuid = { version = "0.4", features = ["v4"] }
+regex = { version = "0.2.11", features = ["simd-accel"] }
+
