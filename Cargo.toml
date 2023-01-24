@@ -8,7 +8,7 @@ authors = [
 keywords = ["envsubst", "template"]
 license-file = "LICENSE"
 readme = "README.md"
-description = "Substitution like envsubst, but can escape."
+description = "Env substitution, just like envsubst"
 documentation = "https://git.compilenix.org/CompileNix/renvsubst"
 edition = "2021"
 
