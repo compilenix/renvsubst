@@ -1,20 +1,18 @@
-# renvsubst
+# cnx-renvsubst
 
-Text substitution tool like envsubst, but it can escape vars.
+A Rust implementation of `envsubst`.
 
 # Usage
 
 Substitutes the values of environment variables.
 
+Non-existing env vars will **NOT** (unlike with `envsubst`) be replaced with an empty string.
+
 ```
 $ export FOO=foooo
 $ echo 'I like $FOO' | cargo run
 I like foooo
-```
 
-It can escape variable name.
-
-```
-$ echo 'I like $FOO, ${FOO}, \$FOO, \${FOO}' | cargo run
-I like foooo, foooo, $FOO, ${FOO}
+$ echo 'I like $FOO, ${FOO}, \$FOO, \${FOO}, \\${FOO}' | cargo run
+I like foooo, foooo, \foooo, \foooo, \foooo
 ```
