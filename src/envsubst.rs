@@ -4,9 +4,9 @@ use std::env;
 pub fn replace(input: String) -> String {
     // Group 1 contains any \ chars right before a $ char
     // Group 2 (named head) contains all chars after the $ char
-    let var_pattern = Regex::new(r"(\\*)\$(?P<head>\{([[:word:]]+)\}|([[:word:]]+))").unwrap();
     // Group 3 (might be empty) contains all chars after the $ char, except for surrounding { and } chars
     // Group 4 (might be empty) is the same as Group 3 for any case where there are no surrounding { and } chars
+    let var_pattern = Regex::new(r"(\\*)\$(?P<head>\{([[:word:]]+)}|([[:word:]]+))").unwrap();
 
     let output = var_pattern.replace_all(&input, |caps: &regex::Captures| {
         // grab any \ chars at the beginning of the match, which would otherwise be thrown away in the output
