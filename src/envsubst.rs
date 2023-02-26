@@ -4,12 +4,12 @@ use std::env;
 pub fn replace(input: String) -> String {
     // Group 1 contains any \ chars right before a $ char
     // Group 2 (named head) contains all chars after the $ char
-    // Group 3 (might be empty) contains all chars after the $ char, except for sorrounding { and } chars
-    // Group 4 (might be empty) is the same as Group 3 for any case where there are no sorrounding { and } chars
     let var_pattern = Regex::new(r"(\\*)\$(?P<head>\{([[:word:]]+)\}|([[:word:]]+))").unwrap();
+    // Group 3 (might be empty) contains all chars after the $ char, except for surrounding { and } chars
+    // Group 4 (might be empty) is the same as Group 3 for any case where there are no surrounding { and } chars
 
     let output = var_pattern.replace_all(&input, |caps: &regex::Captures| {
-        // grap any \ chars at the beginning of the match, which would otherwise be thrown away in the output
+        // grab any \ chars at the beginning of the match, which would otherwise be thrown away in the output
         let mut pre_escape_chars = "";
         if caps.get(1).map_or(false, |m| m.as_str().len() % 2 == 1) {
             pre_escape_chars = caps.get(1).unwrap().as_str();
