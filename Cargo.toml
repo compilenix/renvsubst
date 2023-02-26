@@ -25,5 +25,5 @@ panic = "abort"
 strip = true
 
 [dependencies]
-regex = { version = "0.2.11", features = ["simd-accel"] }
+regex = { version = "1.7.1", features = ["std", "unicode"], default-features = false }
 
