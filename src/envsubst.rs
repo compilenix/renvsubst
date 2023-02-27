@@ -48,8 +48,8 @@ mod tests {
         env::set_var("FOO", "bar");
         env::set_var("BAR", "baz");
 
-        let input = r#"Hello, $FOO and $BAR!"#.to_string();
-        let expected_output = r#"Hello, bar and baz!"#;
+        let input = "Hello, $FOO and $BAR!".to_string();
+        let expected_output = "Hello, bar and baz!";
         let output = replace(input);
         assert_eq!(output, expected_output);
     }
@@ -59,8 +59,8 @@ mod tests {
         env::set_var("FOO", "bar");
         env::set_var("BAR", "baz");
 
-        let input = r#"Hello, ${FOO} and ${BAR}!"#.to_string();
-        let expected_output = r#"Hello, bar and baz!"#;
+        let input = "Hello, ${FOO} and ${BAR}!".to_string();
+        let expected_output = "Hello, bar and baz!";
         let output = replace(input);
         assert_eq!(output, expected_output);
     }
@@ -70,8 +70,8 @@ mod tests {
         env::set_var("FOO", "bar");
         env::set_var("BAR", "baz");
 
-        let input = r#"Hello, \$FOO and \${BAR}!"#.to_string();
-        let expected_output = r#"Hello, \bar and \baz!"#;
+        let input = r"Hello, \$FOO and \${BAR}!".to_string();
+        let expected_output = r"Hello, \bar and \baz!";
         let output = replace(input);
         assert_eq!(output, expected_output);
     }
@@ -81,8 +81,8 @@ mod tests {
         env::set_var("FOO", "bar");
         env::set_var("BAR", "baz");
 
-        let input = r#"Hello, $FOO and ${BAR}, $NON_EXISTENT"#.to_string();
-        let expected_output = r#"Hello, bar and baz, $NON_EXISTENT"#;
+        let input = "Hello, $FOO and ${BAR}, $NON_EXISTENT".to_string();
+        let expected_output = "Hello, bar and baz, $NON_EXISTENT";
         let output = replace(input);
         assert_eq!(output, expected_output);
     }
@@ -93,8 +93,8 @@ mod tests {
         env::set_var("BAR", "baz");
 
         // Test multiple instances of the same variable
-        let input = r#"$FOO $FOO $FOO"#.to_string();
-        let expected_output = r#"bar bar bar"#;
+        let input = "$FOO $FOO $FOO".to_string();
+        let expected_output = "bar bar bar";
         let output = replace(input);
         assert_eq!(output, expected_output);
     }
@@ -105,8 +105,8 @@ mod tests {
         env::set_var("SPECIAL", r#"!@#"#);
 
         // Test with numbers and special characters
-        let input = r#"Number: $NUM, Special: $SPECIAL"#.to_string();
-        let expected_output = r#"Number: 123, Special: !@#"#;
+        let input = "Number: $NUM, Special: $SPECIAL".to_string();
+        let expected_output = "Number: 123, Special: !@#";
         let output = replace(input);
         assert_eq!(output, expected_output);
     }
