@@ -1,6 +1,20 @@
 use regex::Regex;
-use std::{env, process};
+use std::env;
 
+/// Replace environment variable placeholders in a given input string with their corresponding
+/// values, if available.
+///
+/// This function takes a single argument, `input`, which is a string that may contain placeholders
+/// for environment variables in the form `$VARNAME` or `${VARNAME}`. If an environment variable with
+/// the given name exists, its value will be substituted for the placeholder in the output. If no
+/// environment variable exists with the given name, the original placeholder will be left in the
+/// output.
+///
+/// # Errors
+///
+/// If there is an error parsing or compiling the regular expression used to match environment
+/// variable placeholders in the input string, this function will print an error message to stderr
+/// and then `panic!()`.
 pub fn replace(input: String) -> String {
     // Group 1 contains any \ chars right before a $ char
     // Group 2 (named head) contains all chars after the $ char
@@ -10,7 +24,7 @@ pub fn replace(input: String) -> String {
         Ok(pattern) => pattern,
         Err(err) => {
             eprintln!("Error while parsing or compiling a regular expression: {err}");
-            process::exit(1);
+            panic!();
         }
     };
 
@@ -133,6 +147,8 @@ mod tests {
     #[test]
     fn replace_input_contains_nulls() {
         env::set_var("NULL_REPLACE", "foo");
+
+        // Test with null bytes in input
         let input = String::from("Before nulls\0\0 after $NULL_REPLACE nulls");
         let expected_output = "Before nulls\0\0 after foo nulls";
         let output = replace(input);
