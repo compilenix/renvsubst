@@ -12,18 +12,6 @@ description = "Env substitution, just like envsubst"
 documentation = "https://git.compilenix.org/CompileNix/renvsubst"
 edition = "2021"
 
-[profile.release.package."*"]
-opt-level = "s"
-codegen-units = 1
-strip = true
-
-[profile.release]
-opt-level = "s"
-lto = true
-codegen-units = 1
-panic = "abort"
-strip = true
-
 [dependencies]
 regex = { version = "1.7.1", features = ["std"], default-features = false }
 
