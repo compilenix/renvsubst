@@ -2,20 +2,17 @@ use regex::Regex;
 use std::{env, process};
 
 pub fn replace(input: String) -> String {
-    #[allow(clippy::needless_late_init)] // false positive
-    let regex: Regex;
-
     // Group 1 contains any \ chars right before a $ char
     // Group 2 (named head) contains all chars after the $ char
     // Group 3 (might be empty) contains all chars after the $ char, except for surrounding { and } chars
     // Group 4 (might be empty) is the same as Group 3 for any case where there are no surrounding { and } chars
-    match Regex::new(r"(\\*)\$(?P<head>\{([[:word:]]+)}|([[:word:]]+))") {
-        Ok(pattern) => regex = pattern,
+    let regex = match Regex::new(r"(\\*)\$(?P<head>\{([[:word:]]+)}|([[:word:]]+))") {
+        Ok(pattern) => pattern,
         Err(err) => {
             eprintln!("Error while parsing or compiling a regular expression: {err}");
             process::exit(1);
         }
-    }
+    };
 
     let output = regex.replace_all(&input, |caps: &regex::Captures| {
         // grab any \ chars at the beginning of the match, which would otherwise be thrown away in the output
