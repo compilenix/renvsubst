@@ -1,28 +1,37 @@
 use regex::Regex;
-use std::env;
+use std::{env, process};
 
 pub fn replace(input: String) -> String {
+    #[allow(clippy::needless_late_init)] // false positive
+    let regex: Regex;
+
     // Group 1 contains any \ chars right before a $ char
     // Group 2 (named head) contains all chars after the $ char
     // Group 3 (might be empty) contains all chars after the $ char, except for surrounding { and } chars
     // Group 4 (might be empty) is the same as Group 3 for any case where there are no surrounding { and } chars
-    let var_pattern = Regex::new(r"(\\*)\$(?P<head>\{([[:word:]]+)}|([[:word:]]+))").unwrap();
+    match Regex::new(r"(\\*)\$(?P<head>\{([[:word:]]+)}|([[:word:]]+))") {
+        Ok(pattern) => regex = pattern,
+        Err(err) => {
+            eprintln!("Error while parsing or compiling a regular expression: {err}");
+            process::exit(1);
+        }
+    }
 
-    let output = var_pattern.replace_all(&input, |caps: &regex::Captures| {
+    let output = regex.replace_all(&input, |caps: &regex::Captures| {
         // grab any \ chars at the beginning of the match, which would otherwise be thrown away in the output
         let mut pre_escape_chars = "";
         if caps.get(1).map_or(false, |m| m.as_str().len() % 2 == 1) {
-            pre_escape_chars = caps.get(1).unwrap().as_str();
+            pre_escape_chars = caps.get(1).map_or("", |m| m.as_str());
         }
 
         // lookup existing env var from match group 3 or match group 4
         // in case no env var exists return the original input string, from match group 0
-        match env::var(caps.get(3).or(caps.get(4)).unwrap().as_str()) {
+        match env::var(caps.get(3).or(caps.get(4)).map_or("", |m| m.as_str())) {
             Ok(var_value) => {
                 format!("{pre_escape_chars}{var_value}")
             }
             _ => {
-                format!("{pre_escape_chars}{}", caps.get(0).unwrap().as_str())
+                format!("{pre_escape_chars}{}", caps.get(0).map_or("", |m| m.as_str()))
             }
         }
     });
@@ -120,6 +129,15 @@ mod tests {
         // Test with empty variable
         let input = "Empty var: $EMPTY".to_string();
         let expected_output = "Empty var: ";
+        let output = replace(input);
+        assert_eq!(output, expected_output);
+    }
+
+    #[test]
+    fn replace_input_contains_nulls() {
+        env::set_var("NULL_REPLACE", "foo");
+        let input = String::from("Before nulls\0\0 after $NULL_REPLACE nulls");
+        let expected_output = "Before nulls\0\0 after foo nulls";
         let output = replace(input);
         assert_eq!(output, expected_output);
     }
